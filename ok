@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h3>FitTrack Mini</h3>
+
+<input id="a" placeholder="Activity">
+<button onclick="add()">Add</button>
+
+<div id="list"></div>
+
+<script>
+let items = JSON.parse(localStorage.getItem("f")||"[]");
+
+function save(){ localStorage.setItem("f", JSON.stringify(items)); }
+
+function add(){
+  let t = a.value;
+  if(!t) return;
+  items.push({t, d:false});
+  a.value = "";
+  save(); show();
+}
+
+function toggle(i){
+  items[i].d = !items[i].d;
+  save(); show();
+}
+
+function del(i){
+  items.splice(i,1);
+  save(); show();
+}
+
+function show(){
+  list.innerHTML = "";
+  items.forEach((x,i)=>{
+    list.innerHTML +=
+      `<div>
+         <span style="text-decoration:${x.d?'line-through':'none'}">${x.t}</span>
+         <button onclick="toggle(${i})">✓</button>
+         <button onclick="del(${i})">X</button>
+       </div>`;
+  });
+}
+
+show();
+</script>
+
+</body>
+</html>
