@@ -1,51 +1,84 @@
 <!DOCTYPE html>
 <html>
-<body>
+  <head>
+    <title>FitTrack</title>
+    <style>
+      body {
+        font-family: Arial;
+        padding: 20px;
+        background-image: ;
+      }
+      input,
+      button {
+        padding: 6px;
+        margin: 4px 0;
+      }
+      .item {
+        padding: 8px;
+        border: 1px solid #ccc;
+        margin: 5px 0;
+      }
+      .done {
+        text-decoration: line-through;
+        color: gray;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>FitTrack</h2>
 
-<h3>FitTrack Mini</h3>
+    <label>Activity:</label><br />
+    <input id="activity" placeholder="e.g. Walk 20 mins" /><br />
+    <button onclick="addItem()">Add</button>
 
-<input id="a" placeholder="Activity">
-<button onclick="add()">Add</button>
+    <h3>Activities</h3>
+    <div id="list"></div>
 
-<div id="list"></div>
+    <script>
+      let items = JSON.parse(localStorage.getItem("fittrack") || "[]");
 
-<script>
-let items = JSON.parse(localStorage.getItem("f")||"[]");
+      function save() {
+        localStorage.setItem("fittrack", JSON.stringify(items));
+      }
 
-function save(){ localStorage.setItem("f", JSON.stringify(items)); }
+      function addItem() {
+        const text = document.getElementById("activity").value;
+        if (!text) return;
 
-function add(){
-  let t = a.value;
-  if(!t) return;
-  items.push({t, d:false});
-  a.value = "";
-  save(); show();
-}
+        items.push({ text: text, done: false });
+        document.getElementById("activity").value = "";
+        save();
+        render();
+      }
 
-function toggle(i){
-  items[i].d = !items[i].d;
-  save(); show();
-}
+      function toggle(i) {
+        items[i].done = !items[i].done;
+        save();
+        render();
+      }
 
-function del(i){
-  items.splice(i,1);
-  save(); show();
-}
+      // Delete item
+      function remove(i) {
+        items.splice(i, 1);
+        save();
+        render();
+      }
 
-function show(){
-  list.innerHTML = "";
-  items.forEach((x,i)=>{
-    list.innerHTML +=
-      `<div>
-         <span style="text-decoration:${x.d?'line-through':'none'}">${x.t}</span>
-         <button onclick="toggle(${i})">✓</button>
-         <button onclick="del(${i})">X</button>
-       </div>`;
-  });
-}
+      function render() {
+        const list = document.getElementById("list");
+        list.innerHTML = "";
+        items.forEach((item, i) => {
+          list.innerHTML += `
+      <div class="item ${item.done ? "done" : ""}">
+        ${item.text}
+        <button onclick="toggle(${i})">✔</button>
+        <button onclick="remove(${i})">✖</button>
+      </div>
+    `;
+        });
+      }
 
-show();
-</script>
-
-</body>
+      render();
+    </script>
+  </body>
 </html>
