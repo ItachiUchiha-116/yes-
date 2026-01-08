@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <header>Web app blah blah</header>
+    <title>Web Lab</title>
+    <style>
+      header {
+        padding-left: 20px;
+        font-size: large;
+        font-family: "Times New Roman", Times, serif;
+      }
+      body {
+        align-items: center;
+        margin: 0;
+        font-family: Arial;
+        background-color: aqua;
+      }
+
+      .box {
+        margin: 20px;
+      }
+      .result {
+        border: 1px solid black;
+        padding: 10px;
+        margin-top: 10px;
+        width: 200px;
+        background-color: rgb(215, 132, 193);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="box">
+      <input id="inp" />
+      <button onclick="run()">Submit</button>
+
+      <div id="out" class="result"></div>
+    </div>
+
+    <script>
+      function run() {
+        let x = document.getElementById("inp").value;
+        document.getElementById("out").innerText = x;
+      }
+    </script>
+  </body>
+</html>
